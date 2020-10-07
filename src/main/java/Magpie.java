@@ -16,6 +16,17 @@ public class Magpie
      * Get a default greeting   
      * @return a greeting
      */
+     
+    /*public static void main(String[] args){
+    	System.out.println(findWord("my mother is kind", "mother"));
+    	System.out.println(findWord("No talking@", "No"));
+    	System.out.println(findWord("a", "."));
+    	System.out.println(findWord("I am smothered.", "mother"));
+		System.out.println(findWord("know", "no"));
+		
+    }
+    */
+    
     public String getGreeting()
     {
         return "Hello, let's talk.";
@@ -31,10 +42,18 @@ public class Magpie
     public String getResponse(String statement)
     {
         String response = "";
-        if (statement.indexOf("no") >= 0)
+        
+        //"negative"
+        if(statement.trim().length() < 1){
+        	response = "Say something, please.";
+        }
+        
+        else if (statement.indexOf("no") >= 0)
         {
             response = "Why so negative?";
         }
+        
+        //family
         else if (statement.indexOf("mother") >= 0
                 || statement.indexOf("father") >= 0
                 || statement.indexOf("sister") >= 0
@@ -42,8 +61,33 @@ public class Magpie
         {
             response = "Tell me more about your family.";
         }
-        else
+        
+        else if(statement.indexOf("cat") >= 0
+        		||statement.indexOf("dog") >= 0)
         {
+        	response = "Tell me more about your pets.";
+        }
+        
+        //teacher
+        
+        else if(statement.indexOf("Nathan") >= 0)
+        {
+        	response = "He sounds like a good teacher.";
+        } 
+        
+        else if(statement.indexOf("bot") >= 0){
+        	response = "Me? NO... What are you talking about?";
+        }
+        
+        else if(statement.indexOf("tell me") >= 0){
+        	response = "No! (vehemently)";
+        }
+        
+        else if(statement.indexOf("Java") >= 0){
+        	response = "I believe Java is developed by SUN and own by Oracle.";
+        }
+        //random
+        else{
             response = getRandomResponse();
         }
         return response;
@@ -55,7 +99,7 @@ public class Magpie
      */
     public String getRandomResponse()
     {
-        final int NUMBER_OF_RESPONSES = 4;
+        final int NUMBER_OF_RESPONSES = 6;
         double r = Math.random();
         int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
         String response = "";
@@ -75,6 +119,12 @@ public class Magpie
         else if (whichResponse == 3)
         {
             response = "You don't say.";
+        }else if (whichResponse == 4)
+        {
+        	response = "That's definitely something.";
+        }else if (whichResponse == 5)
+        {
+        	response = "BEEP BEEP, I AM A BOT.";
         }
     
         return response;
@@ -89,11 +139,39 @@ public class Magpie
 
     // The method returns the index of the first character in word
     // if it is found, and returns -1 otherwise. 
-    public int findWord(String str, String word) {
-        return -1;
+    public static int findWord(String str, String word) {
+    
+        str = str.toLowerCase();
+        word = word.toLowerCase();
+
+    	int end = str.length() - word.length();
+    	int idx = str.indexOf(word);
+        
+        boolean spaceBefore = false;
+        boolean spaceAfter = false;
+        if(idx == 0){
+            spaceBefore = true;
+        }
+
+        if(idx == end){
+            spaceAfter = true;
+        }
+
+        if(idx - 1 >= 0 && str.charAt(idx - 1) == ' '){
+            spaceBefore = true;
+        }
+
+        if(idx + word.length() < str.length() && str.charAt(idx + word.length()) == ' '){
+            spaceAfter = true;
+        }
+
+        if(spaceBefore == true && spaceAfter == true){
+            return idx;
+        }else{
+            return -1;
+        }
     }
 
-    
     // We will work on the following methods later!
 
     /**
